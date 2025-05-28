@@ -8,3 +8,7 @@ Coffee::Coffee()
 std::string Coffee::GetCategory() const {
     return "Drink";
 }
+std::string Coffee::GetPreferredDeviceType() const {
+    return "CoffeePot";
+}
+

@@ -21,6 +21,9 @@ public:
     void ServeClients();
     void PrintStatus() const;
 	void GenerateRandomOrders();
+	void AdvanceDevicesCooldown();  
+    void AdvanceClientTimers();         
+
 };
 
 #endif

@@ -7,6 +7,8 @@ class Sandwich : public Product {
 public:
     Sandwich();
     std::string GetCategory() const override;
+    std::string GetPreferredDeviceType() const override;
+
 };
 
 #endif

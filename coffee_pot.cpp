@@ -1,13 +1,11 @@
 #include "coffee_pot.h"
 #include <iostream>
 
-CoffeePot::CoffeePot() : Device("Coffee Pot", 2) {}
-
-void CoffeePot::Use() {
-    std::cout << "Brewing a hot coffee..." << std::endl;
-    m_cooldown = 2;
+CoffeePot::CoffeePot()
+    : Device("Coffee Pot", 2, "Drink") {
 }
 
-std::string CoffeePot::GetType() const {
-    return "CoffeePot";
+void CoffeePot::Use() {
+    std::cout << "Brewing coffee...\n";
+    m_cooldown = 2;
 }

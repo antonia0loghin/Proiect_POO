@@ -7,6 +7,8 @@ class Cookie : public Product {
 public:
     Cookie();
     std::string GetCategory() const override;
+    std::string GetPreferredDeviceType() const override;
+
 };
 
 #endif

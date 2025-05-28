@@ -9,6 +9,7 @@ protected:
     std::string m_name;
     int m_cook_time;
     double m_price;
+	std::string m_category;
 
 public:
     Product(std::string name = "Unknown", int cookTime = 0, double price = 0.0);
@@ -23,6 +24,8 @@ public:
 
     // Overload operator <<
     friend std::ostream& operator<<(std::ostream& out, const Product& p);
+    virtual std::string GetPreferredDeviceType() const = 0;
+
 };
 
 #endif

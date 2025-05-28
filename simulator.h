@@ -12,6 +12,8 @@ private:
 
 public:
     void Run();
+    void AdvanceTime(int seconds); 
+
 };
 
 #endif

@@ -7,7 +7,6 @@ class CoffeePot : public Device {
 public:
     CoffeePot();
     void Use() override;
-    std::string GetType() const override;
 };
 
 #endif

@@ -1,9 +1,13 @@
 ﻿#include "simulator.h"
 #include <iostream>
 
+#include <cstdlib>
+#include <ctime>
+
 void Simulator::Run() {
-    std::cout << " Welcome to the Barista Simulator!\n";
-    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+    std::srand(static_cast<unsigned int>(std::time(nullptr))); // pentru randomness
+
+    std::cout << "Welcome to the Barista Simulator!\n";
 
     std::vector<std::string> namePool = { "Ana", "Denis", "Zoe", "Luca", "Radu", "Mara" };
     int numClients = 1 + rand() % 5;
@@ -16,17 +20,16 @@ void Simulator::Run() {
         m_cafe.AddClient(name);
     }
 
-    std::cout << "\nGenerating random orders...\n";
+    
     m_cafe.GenerateRandomOrders();
 
-    // User options
+    // Meniu principal
     bool running = true;
     while (running) {
-        std::cout << "\n What would you like to do?\n";
+        std::cout << "\nWhat would you like to do?\n";
         std::cout << "1. Serve clients\n";
-        std::cout << "2. Advance time\n";
-        std::cout << "3. Show stats\n";
-        std::cout << "4. Exit simulator\n";
+        std::cout << "2. Show stats\n";
+        std::cout << "3. Exit simulator\n";
         std::cout << " Enter choice: ";
 
         int choice;
@@ -34,21 +37,32 @@ void Simulator::Run() {
 
         switch (choice) {
         case 1:
-            m_cafe.ServeClients();
+            m_cafe.ServeClients(); // timpul e gestionat automat aici
             break;
+
         case 2:
-            m_time.AdvanceTime(5);
-            break;
-        case 3:
             Stats::PrintStats();
             break;
-        case 4:
+
+        case 3:
             running = false;
-            std::cout << " Exiting simulator. Have a great day!\n";
+            std::cout << "Exiting simulator. Have a great day!\n";
             break;
+
         default:
-            std::cout << " Invalid choice, try again.\n";
+            std::cout << "Invalid choice, try again.\n";
             break;
         }
     }
 }
+
+
+void Simulator::AdvanceTime(int seconds) {
+    for (int i = 0; i < seconds; ++i) {
+        m_time.AdvanceTime(1);
+        m_cafe.AdvanceDevicesCooldown();
+        m_cafe.AdvanceClientTimers();
+        std::cout << "[Time Tick] Devices updated. Clients getting impatient...\n";
+    }
+}
+

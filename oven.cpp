@@ -1,13 +1,10 @@
 #include "oven.h"
 #include <iostream>
 
-Oven::Oven() : Device("Oven", 5) {}
+Oven::Oven() : Device("Oven", 4, "Dessert") {}
 
 void Oven::Use() {
     std::cout << "Baking something crispy in the oven..." << std::endl;
-    m_cooldown = 5;
+    m_cooldown = 4;
 }
 
-std::string Oven::GetType() const {
-    return "Oven";
-}

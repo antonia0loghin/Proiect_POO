@@ -7,7 +7,7 @@ class SandwichMaker : public Device {
 public:
     SandwichMaker();
     void Use() override;
-    std::string GetType() const override;
+    
 };
 
 #endif

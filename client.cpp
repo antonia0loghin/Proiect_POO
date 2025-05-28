@@ -17,3 +17,13 @@ Order& Client::GetOrder(){
 std::string Client::GetName() const {
     return m_name;
 }
+
+
+void Client::DecreasePatience() {
+    if (m_patience_seconds > 0)
+        --m_patience_seconds;
+}
+
+bool Client::IsStillWaiting() const {
+    return m_patience_seconds > 0;
+}

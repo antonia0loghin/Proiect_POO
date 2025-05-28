@@ -7,6 +7,8 @@ class Coffee : public Product {
 public:
     Coffee();
     std::string GetCategory() const override;
+    std::string GetPreferredDeviceType() const override;
+
 };
 
 #endif

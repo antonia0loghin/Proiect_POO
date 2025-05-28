@@ -1,22 +1,24 @@
-﻿#pragma once
-#ifndef DEVICE_H
+﻿#ifndef DEVICE_H
 #define DEVICE_H
 
 #include <string>
-#include <iostream>
 
 class Device {
 protected:
     std::string m_name;
-    int m_cooldown; // timp de așteptare până se poate folosi din nou
+    std::string m_compatible_category;
+    int m_cooldown;
 
 public:
-    Device(std::string name, int cooldown);
-    virtual ~Device();
+    Device(const std::string& name, int cooldown, const std::string& category);
+    virtual ~Device() {}
+
     virtual void Use() = 0;
+
     std::string GetName() const;
+    std::string GetCompatibleCategory() const;
     bool IsReady() const;
-    virtual std::string GetType() const = 0;
+    void Tick();
 };
 
 #endif

@@ -7,7 +7,7 @@ class Oven : public Device {
 public:
     Oven();
     void Use() override;
-    std::string GetType() const override;
+    
 };
 
 #endif

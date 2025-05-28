@@ -16,6 +16,8 @@ public:
     void AddProduct(std::shared_ptr<Product> product);
     void PrintOrder() const;
     int GetTotalTime() const;
+    const std::vector<std::shared_ptr<Product>>& GetProducts() const;
+
 };
 
 #endif

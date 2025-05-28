@@ -21,3 +21,7 @@ int Order::GetTotalTime() const {
     }
     return total;
 }
+
+const std::vector<std::shared_ptr<Product>>& Order::GetProducts() const {
+    return m_products;
+}
