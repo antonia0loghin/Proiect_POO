@@ -12,7 +12,11 @@ private:
 
 public:
     void Run();
-    void AdvanceTime(int seconds); 
+    void TickTime(int seconds);  // <--  timp care trece în funcție de acțiuni
+
+    // pentru acces la cafe
+    Cafe& GetCafe();
+    TimeManager& GetTime();
 
 };
 

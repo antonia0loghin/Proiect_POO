@@ -4,10 +4,10 @@
 #include <vector>
 #include <memory>
 #include "device.h"
-#include "coffee_pot.h"
-#include "sandwich_maker.h"
-#include "oven.h"
+
 #include "client.h"
+
+class Simulator;
 
 class Cafe {
 private:
@@ -18,11 +18,14 @@ private:
 public:
     Cafe();
     void AddClient(const std::string& name);
-    void ServeClients();
+    void ServeClients(Simulator *sim);
     void PrintStatus() const;
 	void GenerateRandomOrders();
 	void AdvanceDevicesCooldown();  
-    void AdvanceClientTimers();         
+    void AdvanceClientTimers();
+    std::vector<std::unique_ptr<Device>>& GetDevices();
+    void ClearClients();
+
 
 };
 
