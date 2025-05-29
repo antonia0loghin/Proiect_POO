@@ -20,49 +20,52 @@ Cafe::Cafe() : m_next_order_id(1) {
     m_devices.emplace_back(new Oven());
 }
 
+
 void Cafe::AddClient(const std::string& name) {
-    Client newClient(name, m_next_order_id++);
+    std::vector<std::shared_ptr<Product>> products;
 
-    //  creează o comandă
-    Order& order = newClient.GetOrder();
+    int numProducts = 1 + rand() % 3;
 
-    //  randomizare număr produse (1-3)
-    int productCount = 1 + rand() % 3;
-
-    for (int i = 0; i < productCount; ++i) {
+    for (int i = 0; i < numProducts; ++i) {
         int pick = rand() % 3;
 
         switch (pick) {
-            case 0:
-                order.AddProduct(std::make_shared<Coffee>());
-                break;
-            case 1:
-                order.AddProduct(std::make_shared<Sandwich>());
-                break;
-            case 2:
-                order.AddProduct(std::make_shared<Cookie>());
-                break;
+        case 0:
+            products.push_back(std::make_shared<Coffee>("Latte", 6.0, 4));
+            break;
+        case 1:
+            products.push_back(std::make_shared<Sandwich>("Panini", 7.5, 5));
+            break;
+        case 2:
+            products.push_back(std::make_shared<Cookie>("Brownie", 3.5, 2));
+            break;
         }
     }
 
-    m_clients.emplace_back(std::move(newClient));
+    int id = m_next_order_id++;
+
+    //  folosim overload pentru Order si Client
+    Order o(id, products);
+    Client c(name, o);
+
+    m_clients.push_back(c); 
 }
 
 
 void Cafe::ServeClients(Simulator* sim) {
     if (m_clients.empty()) {
-        std::cout << "\n☕ No more clients waiting in the café!\n";
+        std::cout << "\n No more clients waiting in the cafe!\n";
         return;
     }
 
-    //  Copie de backup ca să nu iterăm pe vector modificat
+    //  Copie de backup ca sa nu iteram pe vector modificat
     std::vector<std::string> clientNames;
     for (const auto& client : m_clients) {
         clientNames.push_back(client.GetName());
     }
 
     for (const auto& name : clientNames) {
-        //  Căutăm clientul real (doar dacă mai e acolo)
+        //  Cautam clientul real (doar daca mai e acolo)
         auto it = std::find_if(m_clients.begin(), m_clients.end(),
             [&](const Client& c) { return c.GetName() == name; });
 
@@ -103,7 +106,7 @@ void Cafe::ServeClients(Simulator* sim) {
             }
 
             Device* chosenDevice = m_devices[deviceChoice - 1].get();
-            sim->TickTime(1); // ⏱️ timp trece pentru alegere
+            sim->TickTime(1); // ⏱ timp trece pentru alegere
 
             if (chosenDevice->GetCompatibleCategory() != products[i]->GetCategory()) {
                 std::cout << "\n[ERROR] Wrong device!\n";
@@ -118,14 +121,14 @@ void Cafe::ServeClients(Simulator* sim) {
                 Stats::AddRevenue(products[i]->GetPrice());
 
                 int cookTime = products[i]->GetCookTime();
-                std::cout << "⏳ Preparing for " << cookTime << " seconds...\n";
-                sim->TickTime(cookTime); // timp real
+                std::cout << " Preparing for " << cookTime << " seconds...\n";
+                sim->TickTime(cookTime); 
             } else {
                 std::cout << "Device cooling down. Skipping product.\n";
                 sim->TickTime(1); // mic delay
             }
 
-            // Verificăm dacă clientul a plecat în timpul tick-urilor
+            // Verificam daca clientul a plecat în timpul tick-urilor
             auto check = std::find_if(m_clients.begin(), m_clients.end(),
                 [&](const Client& c) { return c.GetName() == name; });
 
@@ -135,7 +138,7 @@ void Cafe::ServeClients(Simulator* sim) {
             }
         }
 
-        // Dacă clientul nu a plecat, îl marcăm ca servit
+        // Daca clientul nu a plecat, il marcam ca servit
         auto confirm = std::find_if(m_clients.begin(), m_clients.end(),
             [&](const Client& c) { return c.GetName() == name; });
 
@@ -159,23 +162,27 @@ void Cafe::PrintStatus() const {
 
 void Cafe::GenerateRandomOrders() {
     for (auto& client : m_clients) {
-        int numItems = 1 + rand() % 3; // 1 - 3 products per order
+        Order& order = client.GetOrder();
 
-        for (int i = 0; i < numItems; ++i) {
-            int productType = rand() % 3;
+        //  Add 1-2 random products
+        int num = 1 + rand() % 2;
+        for (int i = 0; i < num; ++i) {
+            int p = rand() % 3;
+            if (p == 0) order.AddProduct("Coffee");
+            else if (p == 1) order.AddProduct("Sandwich");
+            else order.AddProduct("Cookie");
+        }
 
-            if (productType == 0) {
-                client.GetOrder().AddProduct(std::make_shared<Coffee>());
-            }
-            else if (productType == 1) {
-                client.GetOrder().AddProduct(std::make_shared<Sandwich>());
-            }
-            else {
-                client.GetOrder().AddProduct(std::make_shared<Cookie>());
-            }
+        //  Bonus: adauga un produs fix în functie de nume
+        if (client.GetName() == "Zoe") {
+            order.AddProduct("Cookie"); 
+        }
+        else if (client.GetName() == "Denis") {
+            order.AddProduct("Coffee"); 
         }
     }
 }
+
 
 void Cafe::AdvanceDevicesCooldown() {
     for (auto& device : m_devices) {
@@ -193,14 +200,14 @@ void Cafe::AdvanceClientTimers() {
         }
     }
 
-    // Eliminăm clienții nervoși
+    // Eliminam clientii nervosi
     m_clients.erase(
         std::remove_if(m_clients.begin(), m_clients.end(),
             [](const Client& c) { return !c.IsStillWaiting(); }),
         m_clients.end()
     );
 
-    // DRAMA MESSAGES 
+    // Mesaje
     std::vector<std::string> rageQuotes = {
         "This place is a disaster!",
         "I'm leaving a 1-star review!",

@@ -1,7 +1,10 @@
 #include "cookie.h"
 
-Cookie::Cookie(): Product("Cookie", 2, 2.0)
-{
+Cookie::Cookie()
+    : Product( "Dessert", 3.0, 2) {
+}
+Cookie::Cookie(const std::string& name, double price, int cook_time)
+    : Product("Dessert", price, cook_time) {
 }
 
 std::string Cookie::GetCategory() const {

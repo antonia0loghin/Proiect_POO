@@ -10,6 +10,8 @@ private:
     int m_patience_seconds = 10;
 
 public:
+    Client(std::string name);
+    Client(std::string name, Order order);
     Client(std::string name, int order_id);
     void PrintClientInfo() const;
     Order& GetOrder() ;
@@ -17,6 +19,7 @@ public:
 
     void DecreasePatience();
     bool IsStillWaiting() const;
+    void PrintOrder() const;
 };
 
 #endif

@@ -1,3 +1,4 @@
+#pragma once
 #ifndef ORDER_H
 #define ORDER_H
 
@@ -12,12 +13,15 @@ private:
     int m_order_id;
 
 public:
-    Order(int id);
-    void AddProduct(std::shared_ptr<Product> product);
+    Order(); // default
+    Order(int id); // cu ID
+    Order(int id, const std::vector<std::shared_ptr<Product>>& products); // cu produse
+    void AddProduct(std::shared_ptr<Product> p);           // original
+    void AddProduct(const std::string& name);              // overload 
     void PrintOrder() const;
     int GetTotalTime() const;
     const std::vector<std::shared_ptr<Product>>& GetProducts() const;
-
+	Order operator+(const Order& other) const;
 };
 
 #endif

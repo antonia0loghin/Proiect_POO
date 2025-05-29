@@ -27,3 +27,24 @@ void Client::DecreasePatience() {
 bool Client::IsStillWaiting() const {
     return m_patience_seconds > 0;
 }
+
+Client::Client(std::string name)
+    : m_name(std::move(name)), m_order() // foloseste Order() default
+{
+    std::cout << "[Client] Created with empty order\n";
+}
+
+Client::Client(std::string name, Order order)
+    : m_name(std::move(name)), m_order(std::move(order)) // foloseste Order(id) sau Order(id, produse)
+{
+    std::cout << "[Client] Created with custom order\n";
+}
+
+
+void Client::PrintOrder() const {
+    const auto& products = m_order.GetProducts();
+    std::cout << "Client " << m_name << "'s order:\n";
+    for (const auto& p : products) {
+        p->Print();
+    }
+}
